@@ -1,0 +1,12 @@
+name: grueschteling
+title: grueschteling
+username: jawneller
+account: jawneller
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 13636680
+bundleId: 9562038
+url: https://jawneller.shinyapps.io/grueschteling/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
