@@ -5,11 +5,14 @@ library(brickr)
 library(png)
 library(shinycssloaders)
 library(shinyjqui)
+library(shinyBS)
 
 ui <- dashboardPage(
-  header = dashboardHeader(title = "Lego Mosaic Builder"),
+  header = dashboardHeader(title = dashboardBrand("Mosaic Builder", image="https://assets.lego.com/logos/v4.5.0/brand-lego.svg")),
   sidebar = dashboardSidebar(
-    fileInput("image_upload", "Upload Image", accept = c("image/png", "image/jpeg")),
+    actionLink("info", "What's going on here?"),
+    hr(),
+    fileInput("image_upload", "Upload PNG file", accept = c("image/png")),
     hr(h4("Create Mosaic")),
     sliderInput("image_scaling", "Scale Image (%)", value=0.5, min = 0, max = 1, step = 0.05),
     numericInput("mosaic_size", "Mosaic Size (Bricks)", value = 36, min = 1),
@@ -21,6 +24,12 @@ ui <- dashboardPage(
     orderInput("warhol", "Warhol Effect", items=c(1,2,3)),
     
     magnified = FALSE
+
+  ),
+  footer = dashboardFooter(
+    right=a("Copyright Jonathan Eller, 2024",
+            href = "https://github.com/jawneller"
+    )
   ),
 
 # body --------------------------------------------------------------------
@@ -58,6 +67,31 @@ server <- function(input, output) {
     )
   }, deleteFile = FALSE)
   
+  observeEvent(input$info, {
+    showModal(modalDialog(
+      id = "infoModal", # ID of the modal
+      title = "Merry Christmas Randall!!",
+      img(
+        src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Frandalleller.com%2Fwp-content%2Fuploads%2F2016%2F05%2Fcorpbanner-e1466137029610.jpg&f=1&nofb=1&ipt=115122eaeaec07e7a5f8a2f48d3d9698758b6053aa20a7b69da6d53c13daeef1&ipo=images",
+        align="right",
+        width="250px"
+      ),
+      p("Now you can create your own Lego mosaics from your own images using this app."),
+      p("Upload a png image file, adjust the mosaic size, and click 'Create Mosaic'."),
+      tags$ul(
+        tags$li("Build Image: Shows the mosaic as it would be built."),
+        tags$li("Piece Table: A table listing the number of each type of brick needed."),
+        tags$li("Piece List: A visual representation of the pieces needed."),
+        tags$li("Instructions (Plot): A visual instruction guide for building the mosaic."),
+        tags$li("Uploaded Image: The original uploaded image.")
+      ),
+      p("There are quite a few options to play around with the coloring, resolution,
+        and which bricks are used for the mosaic. See the Advanced Options for these."),
+      p("This app uses the 'brickr' package."),
+      tags$a(href="https://github.com/koen-hufkens/brickr", "brickr github page"),
+    ))
+  })
+
 
 # reactives ---------------------------------------------------------------
 
